@@ -28,7 +28,7 @@ const DollarStat = () => {
   return (
     <>
       {currencyRate && (
-        <div className="stats shadow border-2 border-gray-200">
+        <div className="stats stats-vertical lg:stats-horizontal shadow border-2 border-gray-200">
           <div className="stat place-items-center">
             <div className="stat-figure text-primary">
               <MdCurrencyExchange size={40} />
