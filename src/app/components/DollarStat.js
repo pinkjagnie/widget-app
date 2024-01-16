@@ -6,8 +6,11 @@ import { MdCurrencyExchange } from "react-icons/md";
 
 const DollarStat = () => {
   const [currencyRate, setCurrencyRate] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const getCurrencyRate = async () => {
+    setLoading(true);
+
     const response = await fetch("/api/get-exchange-rate", {
       headers: {
         "Content-Type": "application/json",
@@ -18,6 +21,7 @@ const DollarStat = () => {
 
     console.log(data.rates[0]);
 
+    setLoading(false);
     setCurrencyRate(data.rates[0]);
   };
 
@@ -26,10 +30,15 @@ const DollarStat = () => {
   }, []);
 
   return (
-    <>
-      {currencyRate && (
-        <div className="stats stats-vertical lg:stats-horizontal shadow border-2 border-gray-200">
-          <div className="stat place-items-center">
+    <div className="stats stats-vertical lg:stats-horizontal shadow w-[374px] h-[140px] border-2 border-gray-200">
+      <div className="stat place-items-center">
+        {/* LOADER */}
+        {loading && !currencyRate && (
+          <span className="loading loading-dots loading-lg"></span>
+        )}
+        {/* STATS */}
+        {!loading && currencyRate && (
+          <>
             <div className="stat-figure text-primary">
               <MdCurrencyExchange size={40} />
             </div>
@@ -38,10 +47,10 @@ const DollarStat = () => {
               {currencyRate.mid.toFixed(2)} PLN
             </div>
             <div className="stat-desc">Date: {currencyRate.effectiveDate}</div>
-          </div>
-        </div>
-      )}
-    </>
+          </>
+        )}
+      </div>
+    </div>
   );
 };
 
