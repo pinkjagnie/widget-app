@@ -7,22 +7,29 @@ import { MdCurrencyExchange } from "react-icons/md";
 const DollarStat = () => {
   const [currencyRate, setCurrencyRate] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const getCurrencyRate = async () => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const response = await fetch("/api/get-exchange-rate", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+      const response = await fetch("/api/get-exchange-rate", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    console.log(data.rates[0]);
+      console.log(data.rates[0]);
 
-    setLoading(false);
-    setCurrencyRate(data.rates[0]);
+      setLoading(false);
+      setCurrencyRate(data.rates[0]);
+    } catch (error) {
+      setLoading(false);
+      setErrorMsg("Something went wrong");
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -35,6 +42,29 @@ const DollarStat = () => {
         {/* LOADER */}
         {loading && !currencyRate && (
           <span className="loading loading-dots loading-lg"></span>
+        )}
+        {/* ERROR */}
+        {!loading && errorMsg && !currencyRate && (
+          <button
+            className="btn btn-error btn-outline cursor-pointer hover:bg-error"
+            onClick={() => getCurrencyRate()}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+            {errorMsg}
+          </button>
         )}
         {/* STATS */}
         {!loading && currencyRate && (
