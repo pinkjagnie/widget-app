@@ -35,7 +35,7 @@ const DollarStat = () => {
             </div>
             <div className="stat-title">PLN exchange rate to the US dollar</div>
             <div className="stat-value text-primary pt-4 pb-2">
-              {currencyRate.mid.toFixed()} PLN
+              {currencyRate.mid.toFixed(2)} PLN
             </div>
             <div className="stat-desc">Date: {currencyRate.effectiveDate}</div>
           </div>
